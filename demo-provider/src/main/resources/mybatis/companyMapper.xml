@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jrl.p2p.demo.mapper.CompanyMapper">
+
+	<resultMap type="Company" id="companyResult" >
+		<id property="companyId" column="company_id" />
+		<result property="companyName" column="company_name"/>
+		<result property="address" column="company_address"/>
+	</resultMap>
+
+	<!-- 新增公司对象 -->
+	<insert id="saveCompany" parameterType="Company" keyProperty="companyId">
+		INSERT INTO p2p_demo_company (company_name, company_address) VALUES (#{companyName}, #{address})
+	</insert>
+	
+	<!-- 获取公司信息 -->
+	<select id="getCompany" parameterType="CompanyCriteria" resultMap="companyResult">
+		select company_id, company_name, company_address from p2p_demo_company where 1=1
+		<if test="companyId != null and companyId != 0">
+			and company_id = #{companyId}
+		</if>
+		<if test="companyName != null and companyName != '' ">
+			and company_name like concat(#{companyName}, '%')
+		</if>
+		limit 1
+	</select>
+
+</mapper>
+
+

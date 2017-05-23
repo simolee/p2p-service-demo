@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jrl.p2p.demo.mapper.UserMapper">
+	<resultMap id="userResult" type="User">
+		<id property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="mobile" column="mobile" />
+		<result property="address" column="address" />
+
+		<association property="company" javaType="Company">
+			<id property="companyId" column="company_id" />
+			<result property="companyName" column="company_name" />
+			<result property="address" column="company_address" />
+		</association>
+	</resultMap>
+	
+	<!-- 新增用户对象 -->
+	<insert id="saveUser" parameterType="User" keyProperty="userId">
+		INSERT INTO p2p_demo_user (
+			USER_NAME,
+			MOBILE,
+			ADDRESS,
+			COMPANY_Id
+		)
+		VALUES
+		(
+			#{userName}, #{mobile}, #{address}, #{company.companyId}
+		)
+	</insert>
+	
+	<!-- 获取用户列表 -->
+	<select id="getUserList" resultMap="userResult">
+		SELECT
+			u.user_id,
+			u.user_name,
+			u.mobile,
+			u.address,
+			c.company_id,
+			c.company_name,
+			c.company_address
+		FROM
+			p2p_demo_user u,
+			p2p_demo_company c
+		WHERE 
+			u.company_id = c.company_id
+		LIMIT 0, 50
+	</select>
+
+</mapper>
