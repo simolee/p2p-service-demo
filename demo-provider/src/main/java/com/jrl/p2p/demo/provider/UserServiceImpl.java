@@ -22,7 +22,12 @@ import com.jrl.p2p.demo.mapper.UserMapper;
  */
 @Service("userService")
 public class UserServiceImpl implements UserService {
+
+	/**
+	 * log for this class
+	 */
 	private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
+
 	@Autowired
 	private UserMapper userMapper;
 
